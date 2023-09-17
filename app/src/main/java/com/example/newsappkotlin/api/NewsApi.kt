@@ -29,12 +29,6 @@ interface NewsApi {
      ) : Response<newsArticles>
 
 
+
+
 }
-//object NewsServise{
-//    val newsInstance: newsApi
-//    init {
-//        val retrofit = Retrofit.Builder().baseUrl(baseurl).addConverterFactory(GsonConverterFactory.create()).build()
-//        newsInstance= retrofit.create(newsApi::class.java)
-//
-//    }
-//}

@@ -6,4 +6,7 @@
     <string name="txt_search">Search</string>
     <string name="txt_saved">saved</string>
     <string name="dummy_date">2023–09–13</string>
+    <string name="txt_search_news">Search News</string>
+    <string name="txt_explore_news">Explore News</string>
+    <string name="txt_discover_latest_n_news">Discover Latest \n News</string>
 </resources>

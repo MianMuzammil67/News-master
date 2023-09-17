@@ -31,5 +31,9 @@
     <fragment
         android:id="@+id/detailNewsFragment"
         android:name="com.example.newsappkotlin.ui.fragments.DetailNewsFragment"
-        android:label="DetailNewsFragment" />
+        android:label="DetailNewsFragment" >
+        <argument
+            android:name="article"
+            app:argType="com.example.newsappkotlin.models.Article" />
+    </fragment>
 </navigation>

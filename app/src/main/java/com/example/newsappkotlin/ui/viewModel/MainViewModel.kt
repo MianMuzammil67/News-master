@@ -16,14 +16,19 @@ class MainViewModel(private val repository: NewsRepository) : ViewModel() {
 //    }
     val articleLiveData : LiveData<Resource<newsArticles>>
         get() = repository.articleLiveData
+    val searchLiveData : LiveData<Resource<newsArticles>>
+        get() = repository.searchLiveData
 
     fun getNews(country : String, page : Int){
         viewModelScope.launch {
             repository.getNews(country, page)
         }
     }
-
-
+    fun searchNews(query : String, page : Int) {
+        viewModelScope.launch {
+            repository.searchNews(query,page)
+        }
+    }
 
 
 }

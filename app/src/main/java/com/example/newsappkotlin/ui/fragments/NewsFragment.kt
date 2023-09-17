@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsappkotlin.R
 import com.example.newsappkotlin.api.NewsApi
@@ -20,10 +21,10 @@ import com.example.newsappkotlin.util.Resource
 
 class NewsFragment : Fragment(R.layout.news_fragment) {
     private lateinit var binding: NewsFragmentBinding
-     private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
     private lateinit var newsAdapter: MainRvAdapter
     private val TAG = "NewsFragment"
-    private val  NewsCountory= "us"
+    private val NewsCountory = "us"
     private val NewsPage = 1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -33,12 +34,21 @@ class NewsFragment : Fragment(R.layout.news_fragment) {
 //        viewModel = (activity as MainActivity).viewModel
 
         val apiService = RetrofitHelper.retrofitInstance().create(NewsApi::class.java)
-        val repository = NewsRepository(ArticleDatabase.getDatabaseInstance(requireContext()),apiService)
+        val repository =
+            NewsRepository(ArticleDatabase.getDatabaseInstance(requireContext()), apiService)
         val factory = ViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
-        viewModel.getNews(NewsCountory,NewsPage)
+        viewModel.getNews(NewsCountory, NewsPage)
         setUpRecyclerView()
-        viewModel.articleLiveData.observe(viewLifecycleOwner, Observer { response ->
+
+        newsAdapter.onItemClicked {
+             val bundle = Bundle().apply {
+                 putSerializable("article",it)
+             }
+            findNavController().navigate(R.id.action_newsFragment_to_detailNewsFragment,bundle)
+        }
+
+        viewModel.articleLiveData.observe(viewLifecycleOwner) { response ->
             when (response) {
                 is Resource.Success -> {
                     response.data?.let {
@@ -46,24 +56,29 @@ class NewsFragment : Fragment(R.layout.news_fragment) {
                         newsAdapter.differ.submitList(it.articles)
                     }
                 }
+
                 is Resource.Error -> {
                     response.data?.let {
                         hideProgressBar()
                         Log.e(TAG, "an error occur: $it ")
                     }
                 }
+
                 is Resource.Loading -> {
                     showProgressBar()
                 }
             }
-        })
+        }
     }
+
     private fun showProgressBar() {
         binding.paginationProgressBar.visibility = View.VISIBLE
     }
+
     private fun hideProgressBar() {
         binding.paginationProgressBar.visibility = View.INVISIBLE
     }
+
     private fun setUpRecyclerView() {
         newsAdapter = MainRvAdapter()
         binding.rvMain.apply {
