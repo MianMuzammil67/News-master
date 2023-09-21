@@ -10,7 +10,7 @@ import com.example.newsappkotlin.R
 import com.example.newsappkotlin.databinding.RvMainLayoutBinding
 import com.example.newsappkotlin.models.Article
 
-class MainRvAdapter : RecyclerView.Adapter<MainRvAdapter.ViewHolder>() {
+class MainRvAdapter() : RecyclerView.Adapter<MainRvAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,24 +23,25 @@ class MainRvAdapter : RecyclerView.Adapter<MainRvAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val articleList = differ.currentList[position]
         holder.itemView.apply {
-            Glide.with(this).load(articleList.urlToImage).placeholder(R.drawable.hourglass).into(holder.binding.newsImage)
+            holder.binding.apply {
+                tvAuthor.text = articleList.source.name
+                tvDate.text = articleList.publishedAt
+                tvTittle.text = articleList.title
+            }
+            Glide.with(this).load(articleList.urlToImage).placeholder(R.drawable.hourglass)
+                .into(holder.binding.newsImage)
             setOnClickListener {
                 itemClick?.let { it(articleList) }
             }
         }
-        holder.binding.apply {
-            tvAuthor.text = articleList.source.name
-            tvDate.text = articleList.publishedAt
-            tvTittle.text = articleList.title
-        }
-
     }
+
     private var itemClick: ((Article) -> Unit)? = null
-    fun onItemClicked(lisner: (Article) -> Unit) {
-        itemClick = lisner
+
+    fun onItemClicked(listener: (Article) -> Unit) {
+        itemClick = listener
 
     }
-
     override fun getItemCount(): Int {
         return differ.currentList.size
     }
@@ -54,7 +55,7 @@ class MainRvAdapter : RecyclerView.Adapter<MainRvAdapter.ViewHolder>() {
             return oldItem == newItem
         }
     }
-     val differ = AsyncListDiffer(this, diffUtilCallback)
+    val differ = AsyncListDiffer(this, diffUtilCallback)
 
     inner class ViewHolder(val binding: RvMainLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 }

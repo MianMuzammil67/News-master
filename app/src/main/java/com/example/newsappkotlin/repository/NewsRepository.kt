@@ -4,18 +4,19 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.newsappkotlin.api.NewsApi
 import com.example.newsappkotlin.db.ArticleDatabase
-import com.example.newsappkotlin.models.newsArticles
+import com.example.newsappkotlin.models.Article
+import com.example.newsappkotlin.models.NewsArticles
 import com.example.newsappkotlin.util.Resource
 import org.json.JSONObject
 
 class NewsRepository(val db: ArticleDatabase, private val api: NewsApi) {
 
-    private val _articleLiveData = MutableLiveData<Resource<newsArticles>>()
-    private val _searchLiveData = MutableLiveData<Resource<newsArticles>>()
+    private val _articleLiveData = MutableLiveData<Resource<NewsArticles>>()
+    private val _searchLiveData = MutableLiveData<Resource<NewsArticles>>()
 
-    val articleLiveData: LiveData<Resource<newsArticles>>
+    val articleLiveData: LiveData<Resource<NewsArticles>>
         get() = _articleLiveData
-    val searchLiveData: LiveData<Resource<newsArticles>>
+    val searchLiveData: LiveData<Resource<NewsArticles>>
         get() = _searchLiveData
 
     suspend fun getNews(country: String, page: Int) {
@@ -41,4 +42,7 @@ class NewsRepository(val db: ArticleDatabase, private val api: NewsApi) {
 
     }
 
+    suspend fun saveArticle(article : Article)=db.getArticleDao().UpsertRdbArticles(article)
+    suspend fun deleteSavedArticle(article: Article)= db.getArticleDao().deleteRdbArticles(article)
+    fun getSavedArticle()=db.getArticleDao().getRdbArticles()
 }

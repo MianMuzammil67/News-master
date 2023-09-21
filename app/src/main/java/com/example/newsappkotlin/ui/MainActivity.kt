@@ -15,7 +15,7 @@ import com.example.newsappkotlin.ui.viewModel.MainViewModel
 import com.example.newsappkotlin.ui.viewModel.ViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-     lateinit var binding: ActivityMainBinding
+     private lateinit var binding: ActivityMainBinding
       lateinit var viewModel : MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

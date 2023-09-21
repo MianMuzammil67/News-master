@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,11 +40,9 @@ class NewsFragment : Fragment(R.layout.news_fragment) {
         viewModel.getNews(NewsCountory, NewsPage)
         setUpRecyclerView()
 
-        newsAdapter.onItemClicked {
-             val bundle = Bundle().apply {
-                 putSerializable("article",it)
-             }
-            findNavController().navigate(R.id.action_newsFragment_to_detailNewsFragment,bundle)
+        newsAdapter.onItemClicked {article->
+            val action = NewsFragmentDirections.actionNewsFragmentToDetailNewsFragment(article)
+            findNavController().navigate(action)
         }
 
         viewModel.articleLiveData.observe(viewLifecycleOwner) { response ->
@@ -56,7 +53,6 @@ class NewsFragment : Fragment(R.layout.news_fragment) {
                         newsAdapter.differ.submitList(it.articles)
                     }
                 }
-
                 is Resource.Error -> {
                     response.data?.let {
                         hideProgressBar()
@@ -87,4 +83,5 @@ class NewsFragment : Fragment(R.layout.news_fragment) {
 
         }
     }
+
 }

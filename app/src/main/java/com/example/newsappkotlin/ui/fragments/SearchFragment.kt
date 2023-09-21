@@ -5,7 +5,6 @@ import android.util.Log
 import android.view.View
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,12 +40,16 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
             NewsRepository(ArticleDatabase.getDatabaseInstance(requireContext()), apiService)
         val factory = ViewModelFactory(repository)
         viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+        newsAdapter = MainRvAdapter()
 
         newsAdapter.onItemClicked {
-            val bundle = Bundle().apply {
-                putSerializable("article",it)
-            }
-            findNavController().navigate(R.id.action_newsFragment_to_detailNewsFragment,bundle)
+//            val bundle = Bundle().apply {
+//                putSerializable("article",it.url)
+//            }
+//            findNavController().navigate(R.id.action_searchFragment_to_detailNewsFragment,bundle)
+
+            val action = SearchFragmentDirections.actionSearchFragmentToDetailNewsFragment(it)
+            findNavController().navigate(action)
         }
 
         var job: Job? = null
@@ -91,7 +94,6 @@ class SearchFragment : Fragment(R.layout.search_fragment) {
     }
 
     private fun setupRecyclerView() {
-        newsAdapter = MainRvAdapter()
         binding.searchRv.apply {
             adapter = newsAdapter
             layoutManager = LinearLayoutManager(requireContext())

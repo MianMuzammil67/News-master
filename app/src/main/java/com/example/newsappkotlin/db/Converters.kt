@@ -3,7 +3,7 @@ package com.example.newsappkotlin.db
 import androidx.room.TypeConverter
 import com.example.newsappkotlin.models.Source
 
-class converters {
+class Converters {
 
     @TypeConverter
     fun fromSource(source: Source):String{

@@ -1,6 +1,6 @@
 package com.example.newsappkotlin.api
 
-import com.example.newsappkotlin.models.newsArticles
+import com.example.newsappkotlin.models.NewsArticles
 import com.example.newsappkotlin.util.Constants.Companion.API_KEY
 import retrofit2.Response
 
@@ -17,7 +17,7 @@ interface NewsApi {
         page:Int,
         @Query("apiKey")
         apiKey:String = API_KEY
-     ) : Response<newsArticles>
+     ) : Response<NewsArticles>
       @GET("/v2/everything")
    suspend  fun searchNews(
         @Query("q")
@@ -26,7 +26,7 @@ interface NewsApi {
         page:Int,
         @Query("apiKey")
         apiKey:String = API_KEY
-     ) : Response<newsArticles>
+     ) : Response<NewsArticles>
 
 
 
