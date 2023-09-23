@@ -8,16 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.newsappkotlin.R
-import com.example.newsappkotlin.api.NewsApi
-import com.example.newsappkotlin.api.RetrofitHelper
 import com.example.newsappkotlin.databinding.NewsFragmentBinding
-import com.example.newsappkotlin.db.ArticleDatabase
-import com.example.newsappkotlin.repository.NewsRepository
 import com.example.newsappkotlin.ui.adapter.MainRvAdapter
 import com.example.newsappkotlin.ui.viewModel.MainViewModel
-import com.example.newsappkotlin.ui.viewModel.ViewModelFactory
 import com.example.newsappkotlin.util.Resource
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class NewsFragment : Fragment(R.layout.news_fragment) {
     private lateinit var binding: NewsFragmentBinding
     private lateinit var viewModel: MainViewModel
@@ -30,13 +27,7 @@ class NewsFragment : Fragment(R.layout.news_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = NewsFragmentBinding.bind(view)
 
-//        viewModel = (activity as MainActivity).viewModel
-
-        val apiService = RetrofitHelper.retrofitInstance().create(NewsApi::class.java)
-        val repository =
-            NewsRepository(ArticleDatabase.getDatabaseInstance(requireContext()), apiService)
-        val factory = ViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         viewModel.getNews(NewsCountory, NewsPage)
         setUpRecyclerView()
 

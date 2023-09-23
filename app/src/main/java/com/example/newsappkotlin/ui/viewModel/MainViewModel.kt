@@ -7,9 +7,12 @@ import com.example.newsappkotlin.models.Article
 import com.example.newsappkotlin.models.NewsArticles
 import com.example.newsappkotlin.repository.NewsRepository
 import com.example.newsappkotlin.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MainViewModel(private val repository: NewsRepository) : ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor(private val repository: NewsRepository) : ViewModel() {
 
 
 //    init {

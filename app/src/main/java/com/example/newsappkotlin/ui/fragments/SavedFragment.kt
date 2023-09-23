@@ -10,16 +10,13 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.newsappkotlin.R
-import com.example.newsappkotlin.api.NewsApi
-import com.example.newsappkotlin.api.RetrofitHelper
 import com.example.newsappkotlin.databinding.SavedFragmentBinding
-import com.example.newsappkotlin.db.ArticleDatabase
-import com.example.newsappkotlin.repository.NewsRepository
 import com.example.newsappkotlin.ui.adapter.MainRvAdapter
 import com.example.newsappkotlin.ui.viewModel.MainViewModel
-import com.example.newsappkotlin.ui.viewModel.ViewModelFactory
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SavedFragment : Fragment(R.layout.saved_fragment) {
     private lateinit var  binding : SavedFragmentBinding
     private lateinit var viewModel: MainViewModel
@@ -29,10 +26,7 @@ class SavedFragment : Fragment(R.layout.saved_fragment) {
         super.onViewCreated(view, savedInstanceState)
         binding = SavedFragmentBinding.bind(view)
 
-        val apiService = RetrofitHelper.retrofitInstance().create(NewsApi::class.java)
-        val repository = NewsRepository(ArticleDatabase.getDatabaseInstance(requireContext()),apiService)
-        val factory = ViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         setUpRecyclerView()
 

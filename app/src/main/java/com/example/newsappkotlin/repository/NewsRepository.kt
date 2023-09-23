@@ -8,8 +8,9 @@ import com.example.newsappkotlin.models.Article
 import com.example.newsappkotlin.models.NewsArticles
 import com.example.newsappkotlin.util.Resource
 import org.json.JSONObject
+import javax.inject.Inject
 
-class NewsRepository(val db: ArticleDatabase, private val api: NewsApi) {
+class NewsRepository @Inject constructor(val db: ArticleDatabase, private val api: NewsApi) {
 
     private val _articleLiveData = MutableLiveData<Resource<NewsArticles>>()
     private val _searchLiveData = MutableLiveData<Resource<NewsArticles>>()

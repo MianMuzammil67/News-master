@@ -6,14 +6,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.navigation.ui.NavigationUI
 import com.example.newsappkotlin.R
-import com.example.newsappkotlin.api.NewsApi
-import com.example.newsappkotlin.api.RetrofitHelper
 import com.example.newsappkotlin.databinding.ActivityMainBinding
-import com.example.newsappkotlin.db.ArticleDatabase
-import com.example.newsappkotlin.repository.NewsRepository
 import com.example.newsappkotlin.ui.viewModel.MainViewModel
-import com.example.newsappkotlin.ui.viewModel.ViewModelFactory
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
      private lateinit var binding: ActivityMainBinding
       lateinit var viewModel : MainViewModel
@@ -23,10 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        val apiService = RetrofitHelper.retrofitInstance().create(NewsApi::class.java)
-        val repository = NewsRepository(ArticleDatabase.getDatabaseInstance(this),apiService)
-        val factory = ViewModelFactory(repository)
-        viewModel = ViewModelProvider(this, factory)[MainViewModel::class.java]
+//        val apiService = RetrofitHelper.retrofitInstance().create(NewsApi::class.java)
+//        val repository = NewsRepository(ArticleDatabase.getDatabaseInstance(this),apiService)
+//        val factory = ViewModelFactory(repository)
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
 
         val navConroller = findNavController(R.id.newsNavHostFragment)
 

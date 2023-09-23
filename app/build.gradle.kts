@@ -4,9 +4,7 @@ plugins {
     id("com.google.devtools.ksp")
     id("androidx.navigation.safeargs")
     id("kotlin-parcelize")
-
-
-
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -19,6 +17,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,8 +47,7 @@ android {
 dependencies {
 
     val nav_version = "2.7.2"
-    val room_version = "2.5.2"
-    val lifecycle_version = "2.6.2"
+    val room_version = "2.5.1"
 
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -78,5 +76,9 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 // glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+
+    //dagger hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    ksp("com.google.dagger:hilt-android-compiler:2.48")
 
 }
